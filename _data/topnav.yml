@@ -1,0 +1,16 @@
+## Topnav single links
+## if you want to list an external url, use external_url instead of url. the theme will apply a different link base.
+topnav:
+- title: Topnav
+  items:
+    - title: 새소식
+      url: /news
+
+#Topnav dropdowns
+topnav_dropdowns:
+- title: Topnav dropdowns
+  folders:
+    - title: Products
+      folderitems:
+        - title: Goldilocks Cluster
+          url: /gentile_guide_to_goldilocks_cluster.html
