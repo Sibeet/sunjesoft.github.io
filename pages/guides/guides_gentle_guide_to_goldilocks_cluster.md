@@ -9,36 +9,47 @@ folder: guides
 
 Goldilocks Cluster 에 대해서 간략하게 소개합니다. 기본적인 개념과 용어에 대하여 설명하고, 실습하는 과정을 통해서 Goldilocks Cluster 를 이해하는데 도움이 되기 위하여 작성되었습니다. 
 
-## 용어와 개념   
+## 개념과 용어
+
+### Cluster System
+
+Cluster System 은 하나 이상의 Cluster Member 로 구성되어있는 Cluster Group 으로 이루어진 시스템으로, 물리적으로 분리된 데이터베이스를 Cluster 로 묶어 커다란 하나의 데이터베이스 처럼 사용하게 하는 시스템입니다. 
+
+![Cluster Overview](/images/guides_gentle_guide_to_goldilocks_cluster/cluster_overview.png )
+
+위의 그림은 3개의 Cluster Group 과 각 Cluster Group 이 2개의 Cluster Member 를 가진 Cluster System 을 나타냅니다. 위에서 표현된 Application 들은 각자 다른 Member 에 접속하여 데이터를 처리할 수 있고, G3N2 에 접속한 Application 이 G1N2 에 존재하는 데이터에 접근할 수 있습니다. 이때 DBMS 에서 지원하는 트렌젝션 특성인 ACID 가 모두 완벽하게 지원됩니다. 
 
 ### Cluster Group
 
-Goldilocks Cluster 를 구성하는 가장 큰 단위로, 하나 이상의 Cluster Member 로 구성됩니다.  테이블의 데이터의 일부 또는 전체를 배치하는 단위입니다. Cluster 시스템에서 하나의 테이블은 여러개의 Shard 로 분리할 수 있고, 하나의 그룹은 하나이상의 샤드를 가질 수 있습니다. 결과적으로 하나의 테이블은 여러개의 GROUP 에 분리되어 저장될 수 있습니다. 
+Goldilocks Cluster 를 구성하는 가장 큰 단위로, 하나 이상의 Cluster Member 로 구성됩니다.  테이블의 데이터의 일부 또는 전체를 배치하는 단위입니다. Cluster 시스템에서 하나의 테이블은 여러개의 Shard 로 분리할 수 있고, 하나의 그룹은 하나이상의 샤드를 가질 수 있습니다. 결과적으로 하나의 테이블은 여러개의 GROUP 에 분리되어 저장될 수 있습니다. 다음 그림은 각각의 Group 에 데이터가 나뉘어서 저장되는 방식을 설명합니다. 
+
+![Cluster Group](/images/guides_gentle_guide_to_goldilocks_cluster/cluster_group_concept.png )
 
 ### Cluster Member 
 
-Cluster Member 는 Cluster Group 을 구성하는 단위입니다. Cluster Group 을 구성하기 위해서는 하나이상의 Cluster Member 가 필요합니다. 동일 Cluster Group 에 존재하는 Cluster Member 들의 데이터는 논리적으로 서로 동일합니다. Cluster Member 는 Goldilocks Cluster 시스템의 가용성을 의미합니다. 대부분의 경우 하나의 물리적인 서버가 하나의 Cluster Member 로 사용됩니다.  
+Cluster Member 는 Cluster Group 을 구성하는 단위입니다. Cluster Group 을 구성하기 위해서는 하나이상의 Cluster Member 가 필요합니다. 동일 Cluster Group 에 존재하는 Cluster Member 들의 데이터는 논리적으로 서로 동일합니다. Cluster Member 는 Goldilocks Cluster 시스템의 가용성을 의미합니다. 시스템의 가용성을 높이기 위해서  하나의 물리적인 서버가 하나의 Cluster Member 로 사용됩니다.  다음 그림과 같이 각 Group 별로 하나의 Cluster Member 만 동작가능하여도 전체 Cluster 시스템은 정상적으로 동작합니다. 
+
+![Cluster Fault Tolerant](/images/guides_gentle_guide_to_goldilocks_cluster/cluster_fault_tolerant.png )
 
 {% include note.html content="Golidlocks Cluster 시스템을 표현하는 단위로 M x N 이라는 용어를 사용합니다. M 는 Group 수 , N 은 Member 수로 4x2 라면 각 2개의 Member 를 가진 4개의 Group 으로 이루어진 시스템을 의미합니다. 이러한 표기법은 Goldilocks Cluster 시스템을 간략하게 표시하는 방법입니다" %}
 
 ### Shard 
 
-하나의 테이블의 데이터를 서로 중복되지 않게 규칙에 의해 분리한다면, 각각의 분리된 단위를 Shard 라고 합니다. Shard 는 Cluster Group 에 배치하는 단위입니다. 하나의 테이블을 여러개의 Shard 로 분리하는 방식에는 다음과 같이 3가지가 있습니다. 
+하나의 테이블의 데이터를 서로 중복되지 않게 규칙에 의해 분리한다면, 각각의 분리된 단위를 Shard 라고 합니다. 전통적인 DBMS 에서 제공하는 파티션드 테이블의 파티션의 개념과 유사합니다.   파티션은 서로 물리적으로 분리된 DB 에 걸쳐서 존재할 수 없지만 Shard 는 가능하다는 게 차이점입니다. Shard 는 Cluster Group 에 배치하는 데이터 단위로써, 하나의 매우 큰 테이블을 여러개의 Shard 로 쪼개서 Cluster Group 에 배치 할 수 있습니다. 
+
+하나의 테이블을 여러개의 Shard 로 분리하는 방식에는 다음과 같이 3가지가 있습니다. 
 
 | 구분  | 설명   |
 |----|---|
-| LIST  | Shard Key 로 정의된 컬럼의 값을 기준으로, 컬럼 값의 나열에 따라 ShardING 을 하는 규칙입니다  |
-| RANGE  | Shard Key 로 정의된 컬럼의 값을 기준으로, 컬럼 값의 범위에 따라 ShardING 하는 규칙입니다.  |
-| HASH  | Shard Key 의 값에 Goldilocks 가 제공하는 HASH 함수를 씌워서 해당 HASH 함수의 값으로 SHADING 하는 규칙입니다.  |
+| LIST  | Shard Key 로 정의된 컬럼의 값을 기준으로, 컬럼 값의 나열에 따라 Sharding 을 하는 규칙입니다  |
+| RANGE  | Shard Key 로 정의된 컬럼의 값을 기준으로, 컬럼 값의 범위에 따라 Sharding 하는 규칙입니다.  |
+| HASH  | Shard Key 의 값에 Goldilocks 가 제공하는 HASH 함수를 씌워서 해당 HASH 함수의 값으로 Sharding 하는 규칙입니다.  |
 
-전통적인 DBMS 의 파티션드 테이블의 파티션개념과 비슷합니다. 
+## 실제 구성을 통해 테스트 해보기 
 
+### 준비사항
 
-## 실습하기 
-
-### 전제 
-
-여러분은 Linux 시스템이 설치된 4대의 물리적인 하드웨어를 가지고 있고, 이 장비들은 서로 동일한 네트워크에 위치하여 서로 통신 가능하다고 가정합니다. 각 장비의 명칭과 IP는 다음과 같이 정해져있다고 합시다. 
+여러분은 Linux 시스템이 설치된 4대의 물리적인 하드웨어를 가지고 있고, 이 장비들은 서로 동일한 네트워크에 위치하여 서로 통신 가능하다고 가정합니다. 각 장비의 명칭과 IP는 다음과 같이 정해져있다고 합시다. Virtual Box 나 Docker 등의 가상 시스템으로 구성해도 물론 문제 없이 동작합니다. 
 
 | 이름    |  IP          |
 |---------|--------------|
@@ -47,7 +58,7 @@ Cluster Member 는 Cluster Group 을 구성하는 단위입니다. Cluster Group
 | Node3   |  10.10.10.3  |
 | Node4   |  10.10.10.4  |
 
-Goldilocks Cluster 시스템은 Linux 2.6 이상 glibc 2.6 이상에서 동작합니다. 
+이제 모든 준비가 끝났습니다. 공유디스크, Clusterware, Custom Kernel, 특별한 하드웨어장치와 같은 어떤 부가적인 것도 필요하지 않습니다. 하나의 네트워크 안에 서로 연결된 Linux 시스템들만 준비되면 Goldilocks Cluster 를 꾸밀 수 있습니다. 물론 성능적인 향상을 위해서 NIC 를 듀얼로 구성하는 등의 작업은 필요할 수 있습니다만 실제 Cluster 를 구성하는데 필수 불가결한 요소는 아닙니다. 
 
 ### 패키지 설치 
 
@@ -193,9 +204,7 @@ ALTER TABLE CUSTOMER MOVE SHARD S2 TO CLUSTER GROUP G2;
 
 #### 어플리케이션 변경
 
-위와 같이 G1과 G2 로 데이터를 분리하였다면 사용자 Application 또한 어느정도 변경이 필요합니다. Goldilocks Cluster 시스템이 고객번호를 SHARD 기준으로 나누어 물리적으로 나누었기 때문에 Application 도 자신이 처리할 고객번호를 판단하여 해당 데이터가 존재하는 쪽으로 접속해야합니다. 
-
-물론 그렇게 하지 않더라도 Goldilocks Cluster 시스템이 오류나지 않도록 처리합니다. 그러나 데이터를 물리적으로 분리해서 기대했던 성능 확장을 위해서 Application 의 고려도 필요합니다. 
+위와 같이 G1과 G2 로 데이터를 분리하였다면 사용자 Application 또한 어느정도 변경이 필요합니다. Goldilocks Cluster 시스템이 고객번호를 SHARD 기준으로 나누어 물리적으로 나누었기 때문에 Application 도 자신이 처리할 고객번호를 판단하여 해당 데이터가 존재하는 쪽으로 접속해야합니다. 물론 그렇게 하지 않더라도 Goldilocks Cluster 시스템은 오류를 리턴하지 않습니다. 그러나 데이터를 물리적으로 분리해서 기대했던 성능 확장을 위해선 Application 고려도 필요합니다. 
 
 
 ## 마무리 
