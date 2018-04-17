@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: 간략한 소개 문서  
-      url: /gentile_guide_to_goldilocks_cluster.html
+      url: /guides_gentle_guide_to_goldilocks_cluster.html
       output: web, pdf
       type: homepage   
 

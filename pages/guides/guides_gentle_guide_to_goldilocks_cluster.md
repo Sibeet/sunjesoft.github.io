@@ -1,7 +1,7 @@
 ---
 title: Goldilocks Cluster 시작하기 
 sidebar: guides_sidebar
-permalink: gentile_guide_to_goldilocks_cluster.html
+permalink: guides_gentle_guide_to_goldilocks_cluster.html
 folder: guides
 ---
 
