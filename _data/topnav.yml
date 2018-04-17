@@ -3,7 +3,7 @@
 topnav:
 - title: Topnav
   items:
-    - title: 새소식
+    - title: NEWS !
       url: /news
 
 #Topnav dropdowns

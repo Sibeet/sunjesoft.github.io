@@ -5,66 +5,55 @@
         <description>Intended as a documentation theme based on Jekyll for technical writers documenting software and other technical products, this theme has all the elements you would need to handle multiple products with both multi-level sidebar navigation, tags, and other documentation features.</description>
         <link>http://localhost:4000/</link>
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Tue, 17 Apr 2018 14:37:11 +0900</pubDate>
-        <lastBuildDate>Tue, 17 Apr 2018 14:37:11 +0900</lastBuildDate>
+        <pubDate>Tue, 17 Apr 2018 14:48:28 +0900</pubDate>
+        <lastBuildDate>Tue, 17 Apr 2018 14:48:28 +0900</lastBuildDate>
         <generator>Jekyll v3.6.2</generator>
         
         <item>
-            <title>Sample post</title>
-            <description>&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries&lt;/p&gt;
+            <title>Release Node 3.1.11</title>
+            <description>&lt;h2 id=&quot;goldilocks-3111-패치-노트&quot;&gt;Goldilocks 3.1.11 패치 노트&lt;/h2&gt;
 
-&lt;h2 id=&quot;heading&quot;&gt;Heading&lt;/h2&gt;
+&lt;h3 id=&quot;이슈&quot;&gt;이슈&lt;/h3&gt;
+&lt;p&gt;(ISSUE-2140) Table shard 재배치(rebalance, move shard)로 인해 shard가 없는 group이 존재하면 drop table 시 gmaster 비정상 종료&lt;/p&gt;
 
-&lt;p&gt;but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries&lt;/p&gt;
+&lt;p&gt;Table rebalance exclude/move shard 에 의해 shard를 하나도 가지지 않는 group에서는 table과 index의 physical handle을 제거하는데, 버그로 인해 몇개를 지우지 않고 이로 인해 drop table시 ager가 비정상 종료함.&lt;/p&gt;
 
-</description>
-            <pubDate>Fri, 26 Feb 2016 00:00:00 +0900</pubDate>
-            <link>http://localhost:4000/samplepost.html</link>
-            <guid isPermaLink="true">http://localhost:4000/samplepost.html</guid>
-            
-            <category>news</category>
-            
-            <category>getting_started</category>
-            
-            
-        </item>
-        
-        <item>
-            <title>Welcome to Jekyll!</title>
-            <description>&lt;p&gt;Theme updates:&lt;/p&gt;
+&lt;h3 id=&quot;현상-및-증상&quot;&gt;현상 및 증상&lt;/h3&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Permalinks&lt;/li&gt;
-  &lt;li&gt;Kramdown&lt;/li&gt;
-  &lt;li&gt;URL specified in config file&lt;/li&gt;
-  &lt;li&gt;removed PDF output&lt;/li&gt;
-  &lt;li&gt;removed some of the alternative layouts&lt;/li&gt;
-  &lt;li&gt;added blog feature&lt;/li&gt;
-  &lt;li&gt;sidebars configurable per page&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE EXCLUDE_T1 (
+    C1  NUMBER(10,0),
+    C2  NUMBER(10,0),
+    C3  NUMBER(10,0) NOT NULL,
+    C4  NUMBER(10,0),
+    C5  NUMBER(10,0),
+    C6  NUMBER(10,0),
+    C7  NUMBER(10,0),
+    C8  NUMBER(10,0) ) SHARDING BY HASH ( C1 );
 
-</description>
-            <pubDate>Wed, 24 Feb 2016 00:00:00 +0900</pubDate>
-            <link>http://localhost:4000/myupdate.html</link>
-            <guid isPermaLink="true">http://localhost:4000/myupdate.html</guid>
-            
-            <category>news</category>
-            
-            
-        </item>
-        
-        <item>
-            <title>Release Node 3.1.12</title>
-            <description>&lt;p&gt;This is just a test post from the previous year.&lt;/p&gt;
+ALTER TABLE EXCLUDE_T1 ADD PRIMARY KEY ( C1 );
+ALTER TABLE EXCLUDE_T1 ADD CONSTRAINT EXCLUDE_T1_UNIQUE_C1_C2 UNIQUE( C1, C2 ) ;
+ALTER TABLE EXCLUDE_T1 ADD CONSTRAINT EXCLUDE_T1_UNIQUE_C1_C6_C7_C8 UNIQUE( C1, C6, C7, C8 );
+ALTER TABLE EXCLUDE_T1 ADD CONSTRAINT EXCLUDE_T1_UK UNIQUE( C1, C4, C5 );
+CREATE INDEX EXCLUDE_T1_IDX1 ON EXCLUDE_T1 ( C1 );
+CREATE INDEX EXCLUDE_T1_IDX2 ON EXCLUDE_T1 ( C2 );
+CREATE INDEX EXCLUDE_T1_IDX3 ON EXCLUDE_T1 ( C1,C2 );
+
+DROP TABLE EXCLUDE_T1;
+COMMIT;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;수정-전-대처&quot;&gt;수정 전 대처&lt;/h3&gt;
+
+&lt;p&gt;없음.&lt;/p&gt;
 
 </description>
-            <pubDate>Sun, 12 Apr 2015 00:00:00 +0900</pubDate>
-            <link>http://localhost:4000/test-post-from-last-year.html</link>
-            <guid isPermaLink="true">http://localhost:4000/test-post-from-last-year.html</guid>
+            <pubDate>Tue, 17 Apr 2018 00:00:00 +0900</pubDate>
+            <link>http://localhost:4000/patch-note-3-1-13.html</link>
+            <guid isPermaLink="true">http://localhost:4000/patch-note-3-1-13.html</guid>
             
-            <category>news</category>
+            <category>Patch 3.1.11</category>
             
             
         </item>

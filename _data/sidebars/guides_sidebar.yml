@@ -23,7 +23,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 간략한 소개 문서  
+    - title: Goldilocks Cluster 시작하기 
       url: /guides_gentle_guide_to_goldilocks_cluster.html
       output: web, pdf
       type: homepage   

@@ -77,30 +77,10 @@
 
 
 {
-"title": "Sample post",
-"tags": "newsgetting_started",
+"title": "Release Node 3.1.11",
+"tags": "Patch 3.1.11",
 "keywords": "",
-"url": "samplepost.html",
-"summary": "This is some summary frontmatter for my sample post."
-}
-,
-
-
-{
-"title": "Welcome to Jekyll!",
-"tags": "news",
-"keywords": "",
-"url": "myupdate.html",
-"summary": ""
-}
-,
-
-
-{
-"title": "Release Node 3.1.12",
-"tags": "news",
-"keywords": "",
-"url": "test-post-from-last-year.html",
+"url": "patch-note-3-1-13.html",
 "summary": ""
 }
 
