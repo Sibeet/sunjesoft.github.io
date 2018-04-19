@@ -71,6 +71,8 @@
     </script>
     {% endif %}
 
+    <link rel="stylesheet" type="text/css" href="{{ "css/asciinema-player.css"  | prepend: site.baseurl  }}" />
+    <link rel="stylesheet" type="text/css" href="{{ "css/asciinema-theme-snazzy.css"  | prepend: site.baseurl  }}" />
 </head>
 <body>
 {% include topnav.html %}
@@ -103,4 +105,5 @@
 {% if site.google_analytics %}
 {% include google_analytics.html %}
 {% endif %}
+<script type="text/javascript" src="{{ "js/asciinema-player.js" | prepend: site.baseurl  }}"></script>
 </html>

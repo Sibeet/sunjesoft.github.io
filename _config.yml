@@ -24,6 +24,9 @@ github_editme_path: sunjesoft/sunjesoft.github.io/edit/master/
 # google_analytics: UA-66296557-1
 # if you have google-analytics ID, put it in. if not, edit this value to blank.
 
+url: "http:/sunjesoft.github.io"    
+baseurl : /
+
 host: 127.0.0.1
 # the preview server used. Leave as is.
 
