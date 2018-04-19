@@ -13,6 +13,6 @@ permalink: index.html
 </div>
 
 <div class="asciinema-player-section">
-  <asciinema-player src="/images/index/linux.json" poster="data:text/plain,$ # Goldilocks Install (ubuntu)" bn  speed="2"></asciinema-player>
+  <asciinema-player src="/images/index/linux.json" poster="data:text/plain,$ # Goldilocks Install (centos)" bn  speed="2"></asciinema-player>
 </div>
 
