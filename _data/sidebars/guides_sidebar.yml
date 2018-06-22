@@ -28,4 +28,9 @@ entries:
       output: web, pdf
       type: homepage   
 
-    
+     - title: Goldilocks Cluster 시작하기2
+      url: /guides_gentle_guide_to_goldilocks_cluster.html
+      output: web, pdf
+      type: homepage   
+
+ 
